@@ -11,7 +11,6 @@ from articles.models import Article
 def home_view(request):
     article_object = Article.objects.get(id=1)
     articles = Article.objects.all()
-    print(articles)
     context = {
         'articles': articles,
         'id': article_object.id,
