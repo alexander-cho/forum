@@ -23,5 +23,6 @@ from articles import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_view),
-    path('articles/<int:id>/', views.article_detail_view)
+    path('articles/', views.article_search_view),
+    path('articles/<int:id>/', views.article_detail_view),
 ]
