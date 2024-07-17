@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 from .models import Article
 
@@ -6,6 +6,7 @@ from .models import Article
 
 
 def article_search_view(request):
+    print(request.GET)
     query_dict = request.GET
     # <input type="text" name="q"/>
     try:
@@ -29,3 +30,15 @@ def article_detail_view(request, id=None):
         'article_object': article_object
     }
     return render(request, 'articles/detail.html', context=context)
+
+
+def article_create_view(request):
+    context = {}
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        article_object = Article.objects.create(title=title, content=content)
+        context['article_object'] = article_object
+        context['created'] = True
+
+    return render(request, 'articles/create.html', context=context)
