@@ -7,11 +7,11 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Login">
+        <input type="submit" value="Register">
     </form>
 
     {% else %}
-        <p>You're already logged in. Click <a href="/logout/">here</a> to log out.</p>
+        <p>Already have an account? Click <a href="/login/">here</a> to log in.</p>
 
     {% endif %}
 

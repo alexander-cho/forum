@@ -8,12 +8,7 @@
     <div style="margin-top:30px">
         <form method="post">
             {% csrf_token %}
-            <div>
-                <input type="text" name="title" placeholder="title">
-            </div>
-            <div>
-                <textarea name="content" placeholder="content"></textarea>
-            </div>
+            {{ form.as_p }}
             <input type="submit" value="Submit">
         </form>
     </div>
