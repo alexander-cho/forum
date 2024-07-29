@@ -6,7 +6,8 @@ from .models import Article
 
 # what to display in admin interface
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ['title']
+    list_display = ['id', 'title', 'timestamp', 'last_updated']
+    search_fields = ['title', 'content']
 
 
 admin.site.register(Article, ArticleAdmin)
