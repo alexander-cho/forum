@@ -6,7 +6,7 @@ from .models import Article
 
 # what to display in admin interface
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'timestamp', 'last_updated']
+    list_display = ['id', 'title', 'slug', 'timestamp', 'last_updated']
     search_fields = ['title', 'content']
 
 
