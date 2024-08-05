@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-
+from django.http import Http404
 
 from .models import Article
 from .forms import ArticleCreationForm
@@ -25,10 +25,17 @@ def article_search_view(request):
     return render(request, 'articles/search.html', context=context)
 
 
-def article_detail_view(request, id=None):
+def article_detail_view(request, slug=None):
     article_object = None
-    if id is not None:
-        article_object = Article.objects.get(id=id)
+    if slug is not None:
+        try:
+            article_object = Article.objects.get(slug=slug)
+        except Article.DoesNotExist:
+            raise Http404
+        except Article.MultipleObjectsReturned:
+            article_object = Article.objects.get(slug=slug).first()
+        except:
+            raise Http404
     context = {
         'article_object': article_object
     }
@@ -46,5 +53,6 @@ def article_create_view(request):
         article_object = form.save()
         context['article_object'] = article_object
         context['created'] = True
+        return redirect(article_object.get_absolute_url())
 
     return render(request, 'articles/create.html', context=context)
