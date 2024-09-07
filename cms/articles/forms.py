@@ -21,15 +21,6 @@ class ArticleCreationForm(forms.ModelForm):
 class ArticleCreationFormOld(forms.Form):
     title = forms.CharField(max_length=100)
     content = forms.CharField(max_length=1000)
-
-    # def clean_title(self):
-    #     cleaned_data = self.cleaned_data
-    #     print('cleaned_data', cleaned_data)
-    #     title = cleaned_data.get('title')
-    #     if title.lower().strip() == 'all clean':
-    #         raise forms.ValidationError('that title is already taken.')
-    #     print('title', title)
-    #     return title
     
     def clean(self):
         cleaned_data = self.cleaned_data

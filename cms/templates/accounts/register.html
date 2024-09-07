@@ -3,16 +3,13 @@
 {% block content %}
 
     {% if not request.user.is_authenticated %}
-
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Register">
-    </form>
-
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Register">
+        </form>
     {% else %}
         <p>Already have an account? Click <a href="/login/">here</a> to log in.</p>
-
     {% endif %}
 
 {% endblock %}

@@ -11,7 +11,7 @@ from .forms import ArticleCreationForm
 def article_search_view(request):
     print(request.GET)
     query_dict = request.GET
-    # <input type="text" name="q"/>
+    # <input type="text" name="q"/> in html
     try:
         query = int(query_dict.get('q'))
     except ValueError:

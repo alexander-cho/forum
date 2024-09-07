@@ -2,16 +2,16 @@
 
 {% block content %}
     
-    <h5>create an article</h5>
+    <h5>create</h5>
     
     {% if not created %}
-    <div style="margin-top:30px">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Submit">
-        </form>
-    </div>
+        <div style="margin-top:30px">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Submit">
+            </form>
+        </div>
     {% else %}
         <p>Your article was created</p>
         <a href="/articles/{{ article_object.id }}">{{ article_object.title }} - {{ article_object.content }}</a>
