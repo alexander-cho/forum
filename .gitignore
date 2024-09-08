@@ -164,3 +164,7 @@ cython_debug/
 # IDE configs
 .idea/
 .vscode/
+
+
+# executables
+api
