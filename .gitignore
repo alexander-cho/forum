@@ -167,4 +167,5 @@ cython_debug/
 
 
 # executables
-api
+api/api
+api/vendor

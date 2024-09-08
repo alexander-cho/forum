@@ -4,7 +4,6 @@ from .models import Article
 from .utils import slugify_article_instance_title
 
 
-# Create your tests here.
 class TestArticle(TestCase):
     """
     Tests for the Article model.
@@ -63,8 +62,3 @@ class TestArticle(TestCase):
             new_slugs.append(instance.slug)
         unique_slugs = list(set(new_slugs))
         self.assertEqual(len(new_slugs), len(unique_slugs))
-
-    def test_slugify_article_instance_title_redux(self):
-        slug_list = Article.objects.all().values_list('slug', flat=True)
-        unique_slug_list = list(set(slug_list))
-        self.assertEqual(len(slug_list), len(unique_slug_list))

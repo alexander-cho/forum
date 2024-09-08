@@ -1,6 +1,7 @@
 import random
 from django.utils.text import slugify
 
+
 def slugify_article_instance_title(instance, save=False, new_slug=None):
     """
     Create a unique slug for each new article created.

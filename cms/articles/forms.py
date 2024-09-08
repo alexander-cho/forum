@@ -1,5 +1,4 @@
 from django import forms
-
 from .models import Article
 
 
@@ -14,7 +13,6 @@ class ArticleCreationForm(forms.ModelForm):
         queryset = Article.objects.all().filter(title__icontains=title)
         if queryset.exists():
             self.add_error('title', f'that title: {title} already exists, choose another one.')
-
         return data
 
 

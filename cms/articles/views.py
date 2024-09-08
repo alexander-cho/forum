@@ -5,8 +5,6 @@ from django.http import Http404
 from .models import Article
 from .forms import ArticleCreationForm
 
-# Create your views here.
-
 
 def article_search_view(request):
     print(request.GET)
@@ -54,5 +52,4 @@ def article_create_view(request):
         context['article_object'] = article_object
         context['created'] = True
         return redirect(article_object.get_absolute_url())
-
     return render(request, 'articles/create.html', context=context)
