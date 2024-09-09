@@ -1,15 +1,23 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 
+	"github.com/alexander-cho/manager/api/internal/database"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
+
+	_ "github.com/lib/pq"
 )
+
+type apiConfig struct {
+	DB *database.Queries
+}
 
 func main() {
 	fmt.Println("Hello there.")
@@ -18,10 +26,30 @@ func main() {
 
 	portString := os.Getenv("PORT")
 	if portString == "" {
-		log.Fatal("PORT is not found")
+		log.Fatal("PORT is not found in the environment")
 	}
 
 	fmt.Println("current port:", portString)
+
+	// import database connection
+	dbURL := os.Getenv("DB_URL")
+	if dbURL == "" {
+		log.Fatal("DB URL is not found is not found in the environment")
+	}
+
+	// go std lib sql package
+	conn, err := sql.Open("postgres", dbURL)
+	if err != nil {
+		log.Fatal("Cannot connect to the database", err)
+	}
+
+	// create database connection
+	queries := database.New(conn)
+
+	// create new api config, pass into handlers to give access to database
+	apiCfg := apiConfig{
+		DB: queries,
+	}
 
 	// define router
 	router := chi.NewRouter()
@@ -40,6 +68,7 @@ func main() {
 	// hook up handlerReadiness function to "/ready" path via GET request
 	v1Router.Get("/ready", handlerReadiness)
 	v1Router.Get("/error", handlerError)
+	v1Router.Post("/users", apiCfg.handlerCreateUser)
 
 	// full path: /v1/ready
 	router.Mount("/v1", v1Router)
@@ -52,7 +81,7 @@ func main() {
 
 	log.Printf("Server starting on port %v", portString)
 
-	err := server.ListenAndServe()
+	err = server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}
