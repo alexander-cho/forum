@@ -69,7 +69,10 @@ func main() {
 	v1Router.Get("/ready", handlerReadiness)
 	v1Router.Get("/error", handlerError)
 	v1Router.Post("/users", apiCfg.handlerCreateUser)
-	v1Router.Get("/users", apiCfg.handlerGetUser)
+	v1Router.Get("/users", apiCfg.middlewareAuth(apiCfg.handlerGetUser))
+
+	v1Router.Post("/entries", apiCfg.middlewareAuth(apiCfg.handlerCreateEntry))
+	v1Router.Get("/entries", apiCfg.handlerGetEntries)
 
 	// full path: /v1/ready
 	router.Mount("/v1", v1Router)

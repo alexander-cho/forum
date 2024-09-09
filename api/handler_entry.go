@@ -10,11 +10,11 @@ import (
 	"github.com/google/uuid"
 )
 
-// define http handler to see if server is live and running
-func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
+func (apiCfg *apiConfig) handlerCreateEntry(w http.ResponseWriter, r *http.Request, user database.User) {
 	// handler needs to take as input some json body
 	type parameters struct {
 		Name string `json:"name"`
+		URL  string `json:"url"`
 	}
 	decoder := json.NewDecoder(r.Body)
 
@@ -27,22 +27,32 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 	}
 
 	// otherwise, use db to create user
-	user, err := apiCfg.DB.CreateUser(r.Context(), database.CreateUserParams{
+	entry, err := apiCfg.DB.CreateEntry(r.Context(), database.CreateEntryParams{
 		ID:        uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
 		Name:      params.Name,
+		Url:       params.URL,
+		UserID:    user.ID,
 	})
 	if err != nil {
-		respondWithError(w, 400, fmt.Sprintf("Could not create user: %v", err))
+		respondWithError(w, 400, fmt.Sprintf("Could not create entry: %v", err))
 		return
 	}
 
 	// respond with user object
-	respondWithJSON(w, 201, databaseUserToUser(user))
+	respondWithJSON(w, 201, databaseEntryToEntry(entry))
 }
 
-// define http handler to see if server is live and running
-func (apiCfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
-	respondWithJSON(w, 200, databaseUserToUser(user))
+// no auth necessary
+func (apiCfg *apiConfig) handlerGetEntries(w http.ResponseWriter, r *http.Request) {
+
+	entries, err := apiCfg.DB.GetEntries(r.Context())
+	if err != nil {
+		respondWithError(w, 400, fmt.Sprintf("Could not retrieve entries: %v", err))
+		return
+	}
+
+	// respond with user object
+	respondWithJSON(w, 201, databaseEntriesToEntries(entries))
 }
