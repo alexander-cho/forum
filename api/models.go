@@ -58,3 +58,30 @@ func databaseEntriesToEntries(dbEntries []database.Entry) []Entry {
 	}
 	return entries
 }
+
+type FollowingEntry struct {
+	ID        uuid.UUID `json:"id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	UserID    uuid.UUID `json:"user_id"`
+	EntryID   uuid.UUID `json:"entry_id"`
+}
+
+func databaseFollowingEntryToFollowingEntry(dbFollowingEntry database.FollowingEntry) FollowingEntry {
+	return FollowingEntry{
+		ID:        dbFollowingEntry.ID,
+		CreatedAt: dbFollowingEntry.CreatedAt,
+		UpdatedAt: dbFollowingEntry.UpdatedAt,
+		UserID:    dbFollowingEntry.UserID,
+		EntryID:   dbFollowingEntry.EntryID,
+	}
+}
+
+// getting all of the entries a user is following
+func databaseFollowingEntriesToFollowingEntries(dbFollowingEntries []database.FollowingEntry) []FollowingEntry {
+	followingEntries := []FollowingEntry{}
+	for _, dbFollowingEntry := range dbFollowingEntries {
+		followingEntries = append(followingEntries, databaseFollowingEntryToFollowingEntry(dbFollowingEntry))
+	}
+	return followingEntries
+}

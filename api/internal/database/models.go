@@ -19,6 +19,14 @@ type Entry struct {
 	UserID    uuid.UUID
 }
 
+type FollowingEntry struct {
+	ID        uuid.UUID
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	UserID    uuid.UUID
+	EntryID   uuid.UUID
+}
+
 type User struct {
 	ID        uuid.UUID
 	CreatedAt time.Time

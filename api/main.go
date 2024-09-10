@@ -29,7 +29,7 @@ func main() {
 		log.Fatal("PORT is not found in the environment")
 	}
 
-	fmt.Println("current port:", portString)
+	fmt.Println("Listening at:", portString)
 
 	// import database connection
 	dbURL := os.Getenv("DB_URL")
@@ -65,7 +65,7 @@ func main() {
 	}))
 
 	v1Router := chi.NewRouter()
-	// hook up handlerReadiness function to "/ready" path via GET request
+	// hook up functions to "/ready" path with request methods
 	v1Router.Get("/ready", handlerReadiness)
 	v1Router.Get("/error", handlerError)
 	v1Router.Post("/users", apiCfg.handlerCreateUser)
@@ -73,6 +73,10 @@ func main() {
 
 	v1Router.Post("/entries", apiCfg.middlewareAuth(apiCfg.handlerCreateEntry))
 	v1Router.Get("/entries", apiCfg.handlerGetEntries)
+
+	v1Router.Post("/following-entries", apiCfg.middlewareAuth(apiCfg.handlerCreateFollowingEntry))
+	v1Router.Get("/following-entries", apiCfg.middlewareAuth(apiCfg.handlerGetFollowingEntries))
+	v1Router.Delete("/following-entries/{followingEntryID}", apiCfg.middlewareAuth(apiCfg.handlerDeleteFollowingEntry))
 
 	// full path: /v1/ready
 	router.Mount("/v1", v1Router)
