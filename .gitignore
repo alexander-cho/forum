@@ -168,7 +168,8 @@ cython_debug/
 
 # executables
 api/api
-api/vendor
+vendor/
 
+# others
 tmp/
 thing.txt
